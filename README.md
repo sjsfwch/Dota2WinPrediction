@@ -1,1 +1,2 @@
 # Dota2WinPrediction
+本项目尝试通过一些机器学习算法来预测dota2阵容胜率
