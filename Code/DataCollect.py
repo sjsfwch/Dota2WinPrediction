@@ -8,7 +8,7 @@ api = dota2api.Initialise(MyKey)
 #ma=api.get_match_details(match_id=4324781398)
 
 success=1
-for jsonnIdex in range(1000,1001,1):
+for jsonnIdex in range(1,1001,1):
     if(success==0):
         break
     fileJson=open("F:/dota2win/Dota2WinPrediction/Data/TrainData" + str(jsonnIdex) + ".JSON", "w")
