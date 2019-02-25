@@ -54,6 +54,9 @@ def washData(data):
                 playerAW["xp_per_min"]=player["xp_per_min"]
                 playerAW["last_hits"]=player["last_hits"]
                 playerAW["leaver_status"]=player["leaver_status"]
+                playerAW["kills"]=player["kills"]
+                playerAW["deaths"]=player["deaths"]
+                playerAW["assists"]=player["assists"]
             else:
                 return {}
         #否则弃掉该条数据

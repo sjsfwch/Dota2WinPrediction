@@ -54,10 +54,7 @@ def collect():
         
 
 if __name__ == '__main__':
-    heros=api.get_heroes()
-    print(heros)
-    
-    # collect()
+    collect()
 # for jsonIdex in range(1,1000,1):
 #     fileJson = open(
 #         "F:/dota2win/Dota2WinPrediction/Data/TrainData" + jsonIdex + ".JSON", "w")
