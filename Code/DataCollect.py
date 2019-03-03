@@ -1,4 +1,4 @@
-MyKey = "XXXXXXX"#steam api keyupdata
+MyKey = "XXXXXXXX"#steam api keyupdata
 China = [161, 163, 221, 222, 223, 224, 225, 231]
 import time
 import json
