@@ -1,21 +1,22 @@
 import json
 import csv
 import os
-from DataAnalysis import getSynergyInfo,getCounterInfo,getHeroes
+from DataAnalysis import getSynergyInfo,getCounterInfo,getHeroes,getHeroesStatistics
 import numpy as np
 
 def buildDatasetCsv():
-    if(os.access("./Data/AnalysisData/dataset.csv",os.F_OK)):
+    if(os.access("./Data/AnalysisData/newdataset.csv",os.F_OK)):
         return
     synergyDict=getSynergyInfo()
     counterDict=getCounterInfo()
-    dataset=open("./Data/CleanData/DataSet.json","r")
-    datasetCsv=open("./Data/AnalysisData/dataset.csv","w",newline='',encoding="utf-8")
+    dataset=open("./Data/CleanData/NewDataSet.json","r")
+    datasetCsv=open("./Data/AnalysisData/newdataset.csv","w",newline='',encoding="utf-8")
     writter=csv.writer(datasetCsv)
     # 1-116为1则表示编号为i的英雄在天辉 117-233为1表示编号为i-116的英雄在夜宴 第0列表示天辉赢没赢
     datasetHead=[]
     datasetHead.append("天辉赢")
     heroes=getHeroes()
+    HeroStatistics=getHeroesStatistics()
     HeroIDToSeq=heroes["HeroIDToSeq"]
     for i in range(1,117):
         datasetHead.append("天辉"+heroes[str(i)])
@@ -23,17 +24,23 @@ def buildDatasetCsv():
         datasetHead.append("夜宴"+heroes[str(i-116)])
     datasetHead.append("协同")
     datasetHead.append("克制")
+    datasetHead.append("阵容总体胜率")
     writter.writerow(datasetHead)
-    lines=dataset.readlines()
-    for line in lines:
+    # lines=dataset.readlines()
+    for line in dataset:
         game=json.loads(line)
         gameArr=[0 for i in range(0,233)]
         #天辉协同，夜宴协同，克制关系
-        SR,SD,C=0,0,0
+        WR,SR,SD,C=0,0,0,0
         if(game["radiant_win"]):
             gameArr[0]=1
         for i in range(0,10):
             player1=game["players"][i]
+            # 加上胜率
+            if(player1["player_slot"]<128):
+                WR+=HeroStatistics[str(HeroIDToSeq[str(player1["hero_id"])])]["WinRate"]
+            else:
+                WR-=HeroStatistics[str(HeroIDToSeq[str(player1["hero_id"])])]["WinRate"]
             for j in range(0,10):
                 if(i==j):
                     continue
@@ -54,6 +61,8 @@ def buildDatasetCsv():
                         SD+=synergyDict[str(HeroIDToSeq[str(player1["hero_id"])])][str(HeroIDToSeq[str(player2["hero_id"])])]
         gameArr.append(SR-SD)
         gameArr.append(C)
+        WR=round(WR,4)*100
+        gameArr.append(WR)
         writter.writerow(gameArr)
 
 if __name__ == '__main__':

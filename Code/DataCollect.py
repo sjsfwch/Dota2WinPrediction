@@ -1,4 +1,4 @@
-MyKey = "XXXXXXXX"#steam api keyupdata
+MyKey = "537AD5C3BDCBF53BAFCCA57D016C6514"#steam api keyupdata
 China = [161, 163, 221, 222, 223, 224, 225, 231]
 import time
 import json
@@ -52,9 +52,33 @@ def collect():
         data1.close()
         print("当前进度:%.2f%%"%((jsonnIdex-1000)/20))
         
+def CollectionByVHLevel():
+    success=1
+    for index in range(1,101):
+        if(success==0):
+            break
+        fileJson=open("F:/dota2win/Dota2WinPrediction/Data/RawData/NewTrainData" + str(index) + ".JSON", "w")
+        i=1
+        while(i<10):
+            try:
+                datas=api.get_match_history(skill=3)
+                if(datas["status"]==1):
+                    for data in datas["matches"]:
+                        x=json.dumps(data)+'\n'
+                        fileJson.write(x)
+                else:
+                    success=0
+                    break
+                i+=1
+            except BaseException:
+                time.sleep(30)
+        fileJson.close()
+        print("当前进度:%.2f%%"%((index)/100))
+
 
 if __name__ == '__main__':
-    collect()
+    CollectionByVHLevel()
+    # collect()
 # for jsonIdex in range(1,1000,1):
 #     fileJson = open(
 #         "F:/dota2win/Dota2WinPrediction/Data/TrainData" + jsonIdex + ".JSON", "w")

@@ -62,8 +62,7 @@ def getHeroesStatistics():
         HeroesStatisticsDict[heroSeqID]={"Name":HeroesDict[str(heroSeqID)],"WinCount":0,"Total":0,"WinRate":0,"AverageKills":0,\
             "AverageDeaths":0,"AverageAssists":0,"AverageKDA":0,"AverageGPM":0,"AverageXPM":0}
     RadiantWin,DireWin=0,0
-    for idx in range(1,23):
-        fileOb=open("./Data/CleanData/DataWashed"+str(idx)+".JSON","r")
+    with open("./Data/CleanData/NewDataSet.JSON","r") as fileOb:
         lines=fileOb.readlines()
         for line in lines:
             dictLine=json.loads(line)
@@ -176,15 +175,15 @@ def buildSynergyAndCounterInfo():
     fileCounter.write(json.dumps(counterInfo,indent=4))
 
 def getSynergyInfo():
-    if(not os.access("./Data/AnalysisData/synergyInfo.json",os.F_OK)):
+    if(not os.access("./Data/AnalysisData/NewSynergyInfo.json",os.F_OK)):
         buildSynergyAndCounterInfo()
-    fileSynergy=open("./Data/AnalysisData/synergyInfo.json","r")
+    fileSynergy=open("./Data/AnalysisData/NewSynergyInfo.json","r")
     return json.load(fileSynergy)
 
 def getCounterInfo():
-    if(not os.access("./Data/AnalysisData/counterInfo.json",os.F_OK)):
+    if(not os.access("./Data/AnalysisData/NewCounterInfo.json",os.F_OK)):
         buildSynergyAndCounterInfo()
-    fileCounter=open("./Data/AnalysisData/counterInfo.json","r")
+    fileCounter=open("./Data/AnalysisData/NewCounterInfo.json","r")
     return json.load(fileCounter)
 
 def buildDataset():
@@ -201,7 +200,7 @@ def buildDataset():
 
 if __name__ == '__main__':
     # getHeroes()
-    # getHeroesStatistics()
+    getHeroesStatistics()
     # buildSynergyAndCounterInfo()
-    buildDataset()
+    # buildDataset()
     # analysisWinRateByNone()
